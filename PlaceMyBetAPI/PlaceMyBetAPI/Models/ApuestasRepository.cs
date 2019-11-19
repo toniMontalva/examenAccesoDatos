@@ -13,10 +13,54 @@ namespace PlaceMyBetAPI.Models
     {
         private MySqlConnection Connect()
         {
-            string connString = "Server=34.219.191.133;Port=3306;Database=PlaceMyBet;Uid=examen;password=examen;SslMode=none";
+            // Ejercicio 2
+            string connString = "Server=127.0.0.1;Port=3306;Database=placemybet;Uid=root;password=;SslMode=none";
             MySqlConnection con = new MySqlConnection(connString);
 
             return con;
+        }
+
+        // Ejercicio 2. Método que obtiene una Lista de Apuestas a partir de un id y que el importe apostado sea mayor a 100 euros.
+        internal List<Apuesta> GetApuestasMercadoIdConFiltro(int id)
+        {
+            MySqlConnection con = Connect();
+            MySqlCommand command = con.CreateCommand();
+            command.CommandText = "select * from apuestas where id_mercado = @id";
+            command.Parameters.AddWithValue("@id", id);
+
+            try
+            {
+                con.Open();
+                MySqlDataReader res = command.ExecuteReader();
+
+                Apuesta ap = null;
+                List<Apuesta> apuestasSinFiltro = new List<Apuesta>();
+                while (res.Read())
+                {
+                    Debug.WriteLine("Recuperado: " + res.GetInt32(0) + " " + res.GetDouble(1) + " " + res.GetDouble(2) + " " + res.GetString(3) + " " + res.GetInt32(4) + " " + res.GetInt32(5) + " " + res.GetInt32(6));
+                    ap = new Apuesta(res.GetInt32(0), res.GetDouble(1), res.GetDouble(2), res.GetString(3), res.GetInt32(4), res.GetInt32(5), res.GetInt32(6));
+                    apuestasSinFiltro.Add(ap);
+                }
+
+                con.Close();
+
+                List<Apuesta> apuestasConFiltroImporte = new List<Apuesta>();
+
+                foreach (Apuesta apu in apuestasSinFiltro)
+                {
+                    if(apu.Cantidad >= 100)
+                    {
+                        apuestasConFiltroImporte.Add(apu);
+                    }
+                }
+
+                return apuestasConFiltroImporte;
+            }
+            catch (MySqlException)
+            {
+                Debug.WriteLine("Se ha producido un error de conexión.");
+                return null;
+            }
         }
 
         internal List<Apuesta> Retrieve()
@@ -65,7 +109,7 @@ namespace PlaceMyBetAPI.Models
                 while (res.Read())
                 {
                     Debug.WriteLine("Recuperado: " + res.GetInt32(0) + " " + res.GetString(1) + " " + res.GetString(2) + " " + res.GetString(3) + " " + res.GetString(4) + " " 
-                        + res.GetInt32(5) + " " + res.GetDouble(6) + " " + res.GetInt32(7) + " " + res.GetDouble(8) + " " + res.GetDouble(9) + res.GetString(10) + " " + res.GetInt32(11));
+                        + res.GetInt32(5) + " " + res.GetDouble(6) + " " + res.GetInt32(7) + " " + res.GetDouble(9) + res.GetString(10) + " " + res.GetInt32(11));
                     string tipoMercado = res.GetString(10).ToLower();
                     string overUnder = "";
                     string mercadoUnderOver = "";

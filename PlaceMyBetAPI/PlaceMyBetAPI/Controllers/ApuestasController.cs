@@ -10,12 +10,22 @@ namespace PlaceMyBetAPI.Controllers
 {
     public class ApuestasController : ApiController
     {
+        // Ejercicio 2
+        // GET: api/Apuestas?mercadoId=value
+        public IEnumerable<Apuesta> GetApuestasDesdeMercadoId(int mercadoId)
+        {
+            var repo = new ApuestasRepository();
+            List<Apuesta> apuestasFiltro = repo.GetApuestasMercadoIdConFiltro(mercadoId);
+
+            return apuestasFiltro;
+        }
+
         // GET: api/Apuestas
-        public IEnumerable<ApuestaDTO> Get()
+        public IEnumerable<Apuesta> Get()
         {
             var repo = new ApuestasRepository();
             //List<Apuesta> apuestas = repo.Retrieve();
-            List<ApuestaDTO> apuestas = repo.RetrieveDTO();
+            List<Apuesta> apuestas = repo.Retrieve();
 
             return apuestas;
         }
