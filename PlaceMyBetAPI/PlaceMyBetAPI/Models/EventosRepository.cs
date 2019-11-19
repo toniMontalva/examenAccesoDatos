@@ -11,7 +11,7 @@ namespace PlaceMyBetAPI.Models
     {
         private MySqlConnection Connect()
         {
-            string connString = "Server=127.0.0.1;Port=3306;Database=acceso_datos;Uid=root;password=;SslMode=none";
+            string connString = "Server=34.219.191.133;Port=3306;Database=PlaceMyBet;Uid=examen;password=examen;SslMode=none";
             MySqlConnection con = new MySqlConnection(connString);
 
             return con;
