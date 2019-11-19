@@ -49,6 +49,8 @@ namespace PlaceMyBetAPI.Models
             }
         }
 
+        // Fin ejercicio 3
+
         internal List<Usuario> Retrieve()
         {
             MySqlConnection con = Connect();

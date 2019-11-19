@@ -16,5 +16,7 @@ namespace PlaceMyBetAPI.Models
             Abreviatura = ab;
             Nombre = name;
         }
+
+        // Fin ejercicio 1
     }
 }

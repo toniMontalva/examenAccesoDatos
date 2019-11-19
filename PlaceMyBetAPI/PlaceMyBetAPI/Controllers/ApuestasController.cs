@@ -20,6 +20,8 @@ namespace PlaceMyBetAPI.Controllers
             return apuestasFiltro;
         }
 
+        // FIn Ejercicio 2
+
         // GET: api/Apuestas
         public IEnumerable<Apuesta> Get()
         {
@@ -58,22 +60,24 @@ namespace PlaceMyBetAPI.Controllers
             return apuestas;
         }
 
+        // EJERCICIO 3
+
         // POST: api/Apuestas
         [Authorize]
         public String Post([FromBody]Apuesta apuesta)
         {
             var repo = new ApuestasRepository();
             repo.Save(apuesta);
+
             /*var repoUpdate = new MercadosRepository();
             repoUpdate.UpdateMercadoExistente(apuesta.MercadoId, apuesta);*/
-
-            // EJERCICIO 3
+            
             var repoUsuario = new UsuariosRepository();
             int apuestasUsuario = repoUsuario.CuantasApuestasTieneElUsuario(apuesta.UsuarioId);
             return GetMessage(apuestasUsuario);
         }
 
-        // EJERCICIO 3
+        // FIN EJERCICIO 3
         public String GetMessage(int apuestas)
         {
             return "El usuario tiene " + apuestas + " apuestas actualmente.";
