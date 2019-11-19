@@ -60,12 +60,23 @@ namespace PlaceMyBetAPI.Controllers
 
         // POST: api/Apuestas
         [Authorize]
-        public void Post([FromBody]Apuesta apuesta)
+        public String Post([FromBody]Apuesta apuesta)
         {
             var repo = new ApuestasRepository();
             repo.Save(apuesta);
-            var repoUpdate = new MercadosRepository();
-            repoUpdate.UpdateMercadoExistente(apuesta.MercadoId, apuesta);
+            /*var repoUpdate = new MercadosRepository();
+            repoUpdate.UpdateMercadoExistente(apuesta.MercadoId, apuesta);*/
+
+            // EJERCICIO 3
+            var repoUsuario = new UsuariosRepository();
+            int apuestasUsuario = repoUsuario.CuantasApuestasTieneElUsuario(apuesta.UsuarioId);
+            return GetMessage(apuestasUsuario);
+        }
+
+        // EJERCICIO 3
+        public String GetMessage(int apuestas)
+        {
+            return "El usuario tiene " + apuestas + " apuestas actualmente.";
         }
 
         // PUT: api/Apuestas/5

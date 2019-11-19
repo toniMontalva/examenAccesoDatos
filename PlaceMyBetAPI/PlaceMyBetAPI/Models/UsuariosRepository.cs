@@ -12,10 +12,41 @@ namespace PlaceMyBetAPI.Models
 
         private MySqlConnection Connect()
         {
-            string connString = "Server=34.219.191.133;Port=3306;Database=PlaceMyBet;Uid=examen;password=examen;SslMode=none";
+            string connString = "Server=127.0.0.1;Port=3306;Database=placemybet;Uid=root;password=;SslMode=none";
             MySqlConnection con = new MySqlConnection(connString);
 
             return con;
+        }
+
+        // Ejercicio 3. Método que obtiene un número de apuestas dado el usuario que hace la apuesta.
+        internal int CuantasApuestasTieneElUsuario(int idUsuario)
+        {
+            MySqlConnection con = Connect();
+            MySqlCommand command = con.CreateCommand();
+            command.CommandText = "select * from apuestas where id_usuario=@idUsuario";
+            command.Parameters.AddWithValue("@idUsuario", idUsuario);
+
+            int contadorApuestas = 0;
+
+            try
+            {
+                con.Open();
+                MySqlDataReader res = command.ExecuteReader();
+
+                // Cada línea que lee es una apuesta que ha hecho el usuario
+                while (res.Read())
+                {
+                    contadorApuestas++;
+                }
+
+                con.Close();
+                return contadorApuestas;
+            }
+            catch (MySqlException e)
+            {
+                Debug.WriteLine("Se ha producido un error de conexión.");
+                return -1;
+            }
         }
 
         internal List<Usuario> Retrieve()
